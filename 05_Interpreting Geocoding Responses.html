@@ -51,6 +51,7 @@ and Google's Maps API Course, Lesson 2 -->
         var geocoder = new google.maps.Geocoder();
         document.getElementById('submit').addEventListener('click', function() {
           geocodeAddress(geocoder, map);
+          getDistance();
         });
       }
 
@@ -65,6 +66,24 @@ and Google's Maps API Course, Lesson 2 -->
           } else {
             alert('Geocode was not successful for the following reason: ' + status);
           }
+        });
+      }
+      function getDistance() {
+        var distanceMatrixService = new google.maps.DistanceMatrixService;
+        var origin = "4800 El Camino Real, Los Altos, CA";
+        var destination = "24665 Lathem Street, Mountain View, CA";
+        var mode = google.maps.TravelMode.BICYCLING;
+        distanceMatrixService.getDistanceMatrix({
+           origins: [origin],
+           destinations: [destination],
+           travelMode: google.maps.TravelMode[mode],
+           unitSystem: google.maps.UnitSystem.IMPERIAL,
+        }, function(response, status) {
+            if (status !== google.maps.DistanceMatrixStatus.OK) {
+                window.alert('Error was: ' + status);
+            } else {
+                console.log('distance:' + response.rows[0].elements[0].distance.text); 
+            }
         });
       }
     </script>
