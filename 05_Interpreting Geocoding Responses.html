@@ -34,7 +34,7 @@ and Google's Maps API Course, Lesson 2 -->
   </head>
   <body>
     <div id="floating-panel">
-      <input id="address" type="textbox" VALUE="Florence, Italy">
+      <input id="address" type="textbox" VALUE="Holyoke, MA">
       <input id="submit" type="button" value="Geocode">
       <div id="firstComponent">
       </div>
@@ -46,14 +46,16 @@ and Google's Maps API Course, Lesson 2 -->
       var map;
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 8,
-          center: {lat: 43.7696, lng: 11.2558}
+          zoom: 15,
+          //center: {lat: 43.7696, lng: 11.255}
+          center: {lat: 42.2043, lng: -72.6162}
         });
         var geocoder = new google.maps.Geocoder();
         document.getElementById('submit').addEventListener('click', function() {
           geocodeAddress(geocoder, map);
-          getDistance();
-          displayDirections();
+          //getDistance();
+          //displayDirections();
+          textSearchPlaces("Friendly's");
         });
       }
 
@@ -134,10 +136,68 @@ and Google's Maps API Course, Lesson 2 -->
           }
         });
       }
+     function textSearchPlaces(restaurant) {
+        var bounds = map.getBounds();
+        var placesService = new google.maps.places.PlacesService(map);
+        placesService.textSearch({
+          query: restaurant, 
+          bounds: bounds
+        }, function(results, status) {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+              getPlacesDetails(results);
+          }
+        });
+     }
+
+    function getPlacesDetails(results) {
+        console.log(results);
+      /*var service = new google.maps.places.PlacesService(map);
+      service.getDetails({
+        placeId: marker.id
+      }, function(place, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          // Set the marker property on this infowindow so it isn't created again.
+          infowindow.marker = marker;
+          var innerHTML = '<div>';
+          if (place.name) {
+            innerHTML += '<strong>' + place.name + '</strong>';
+          }
+          if (place.formatted_address) {
+            innerHTML += '<br>' + place.formatted_address;
+          }
+          if (place.formatted_phone_number) {
+            innerHTML += '<br>' + place.formatted_phone_number;
+          }
+          if (place.opening_hours) {
+            innerHTML += '<br><br><strong>Hours:</strong><br>' +
+                place.opening_hours.weekday_text[0] + '<br>' +
+                place.opening_hours.weekday_text[1] + '<br>' +
+                place.opening_hours.weekday_text[2] + '<br>' +
+                place.opening_hours.weekday_text[3] + '<br>' +
+                place.opening_hours.weekday_text[4] + '<br>' +
+                place.opening_hours.weekday_text[5] + '<br>' +
+                place.opening_hours.weekday_text[6];
+          }
+          if (place.photos) {
+            innerHTML += '<br><br><img src="' + place.photos[0].getUrl(
+                {maxHeight: 100, maxWidth: 200}) + '">';
+          }
+          innerHTML += '</div>';
+          infowindow.setContent(innerHTML);
+          infowindow.open(map, marker);
+          // Make sure the marker property is cleared if the infowindow is closed.
+          infowindow.addListener('closeclick', function() {
+            infowindow.marker = null;
+          });
+        }
+      });
+    */
+    }
+
     </script>
     <!--TODO: Insert your API Key in the below call to load the API.-->
     <script async defer
-     src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBYxA2uoPXKkTfmlqjMQYjZ6ZEiU-I6Bew&callback=initMap">
+     src="https://maps.googleapis.com/maps/api/js?libraries=places&v=3&key=AIzaSyBYxA2uoPXKkTfmlqjMQYjZ6ZEiU-I6Bew&callback=initMap">
     </script>
   </body>
 </html>
