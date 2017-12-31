@@ -42,6 +42,7 @@ and Google's Maps API Course, Lesson 2 -->
       </div>
     </div>
     <div id="map"></div>
+    <script src="libs/jquery.min.js"></script>
     <script>
       var map;
       function initMap() {
@@ -55,7 +56,8 @@ and Google's Maps API Course, Lesson 2 -->
           geocodeAddress(geocoder, map);
           //getDistance();
           //displayDirections();
-          textSearchPlaces("Friendly's");
+          //textSearchPlaces("Friendly's");
+          getTimezone(); 
         });
       }
 
@@ -193,7 +195,15 @@ and Google's Maps API Course, Lesson 2 -->
       });
     */
     }
-
+    function getTimezone() {
+        $.get(
+            "https://maps.googleapis.com/maps/api/timezone/json",
+            { location : "51.5073509, -0.1277582999", timestamp : 1514742096, key : "AIzaSyBYxA2uoPXKkTfmlqjMQYjZ6ZEiU-I6Bew"},
+            function(data) {
+                console.log(data); 
+            }
+        );
+    }
     </script>
     <!--TODO: Insert your API Key in the below call to load the API.-->
     <script async defer
